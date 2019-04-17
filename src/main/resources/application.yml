@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      #uri: mongodb://admin:qwe123@127.0.0.1/mymoneyapp
+      database: mymoneyapp
+      username: admin
+      password: qwe123
