@@ -12,5 +12,4 @@ public interface BillingCyclesRepository extends MongoRepository<BillingCycles, 
 	List<BillingCycles> findAll();
 	@SuppressWarnings("unchecked")
 	BillingCycles save(BillingCycles billingCycles);
-
 }

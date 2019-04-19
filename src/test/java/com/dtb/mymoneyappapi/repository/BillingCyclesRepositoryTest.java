@@ -1,6 +1,8 @@
 package com.dtb.mymoneyappapi.repository;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -23,5 +25,10 @@ public class BillingCyclesRepositoryTest {
 		List<BillingCycles> cycles = repository.findAll();
 		cycles.forEach(System.out::println);
 		assertNotNull(cycles);
+	}
+	@Test
+	public void testDeleteAll() {
+		repository.deleteAll();
+		assertTrue(repository.findAll().isEmpty());
 	}
 }
