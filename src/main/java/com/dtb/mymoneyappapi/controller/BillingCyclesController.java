@@ -6,12 +6,16 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dtb.mymoneyappapi.model.dto.CountDto;
@@ -23,6 +27,7 @@ import com.dtb.mymoneyappapi.service.BillingCyclesService;
 
 @RestController
 @RequestMapping("/api/billingCycles")
+@CrossOrigin(origins = "*",methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.OPTIONS,RequestMethod.PUT,RequestMethod.PATCH,RequestMethod.DELETE})
 public class BillingCyclesController {
 	private static final String NOT_FOUND = "Billing Cycle not found for this Id";
 	private static final String EMPTY_COLLECTION = "Any billing cycle found for this filter";
@@ -82,5 +87,11 @@ public class BillingCyclesController {
 		
 		return ResponseEntity.ok(service.update(cycles).fold(ErrorsDto::exception, c -> c));
 	}
-	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable String id) {
+		BillingCycles cycles = service.findById(id)
+				.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, NOT_FOUND));
+		service.delete(cycles.get_id());
+	}
 }
