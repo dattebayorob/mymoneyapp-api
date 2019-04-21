@@ -16,4 +16,5 @@ public interface BillingCyclesService {
 	Either<CustomException, BillingCycles> update(BillingCycles cycles);
 	Long count();
 	Map<String, Double> summaryCreditsAndDebits();
+	void delete(String id);
 }

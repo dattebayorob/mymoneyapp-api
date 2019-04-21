@@ -1,7 +1,6 @@
 package com.dtb.mymoneyappapi.service.impl;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,14 +53,23 @@ public class BillingCyclesServiceImpl implements BillingCyclesService {
 	@Override
 	public Map<String,Double> summaryCreditsAndDebits() {
 		List<BillingCycles> cycles = repository.findAll();
-		Double countCredits = cycles.stream().flatMap(c -> c.getCredits().stream()).collect(Collectors.toList())
+		Double countCredits = cycles.stream()
+				.filter(b -> b.getCredits() != null)
+				.flatMap(c -> c.getCredits().stream()).collect(Collectors.toList())
 				.stream().collect(Collectors.summingDouble(Credit::getValue));
-		Double countDebits = cycles.stream().flatMap(d -> d.getDebits().stream()).collect(Collectors.toList())
+		Double countDebits = cycles.stream()
+				.filter(b -> b.getDebits() != null)				
+				.flatMap(d -> d.getDebits().stream()).collect(Collectors.toList())
 				.stream().collect(Collectors.summingDouble(Debit::getValue));
 		Map<String, Double> summary = new HashMap<>();
 		summary.put("credits", countCredits);
 		summary.put("debits", countDebits);
 		return summary;
+	}
+
+	@Override
+	public void delete(String id) {
+		repository.deleteById(id);
 	}
 	
 	
