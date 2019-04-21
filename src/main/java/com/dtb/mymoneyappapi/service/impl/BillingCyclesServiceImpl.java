@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -55,12 +56,12 @@ public class BillingCyclesServiceImpl implements BillingCyclesService {
 		List<BillingCycles> cycles = repository.findAll();
 		Double countCredits = cycles.stream()
 				.filter(b -> b.getCredits() != null)
-				.flatMap(c -> c.getCredits().stream()).collect(Collectors.toList())
-				.stream().collect(Collectors.summingDouble(Credit::getValue));
+				.flatMap(c -> c.getCredits().stream())
+				.collect(Collectors.summingDouble(Credit::getValue));
 		Double countDebits = cycles.stream()
 				.filter(b -> b.getDebits() != null)				
-				.flatMap(d -> d.getDebits().stream()).collect(Collectors.toList())
-				.stream().collect(Collectors.summingDouble(Debit::getValue));
+				.flatMap(d -> d.getDebits().stream())
+				.collect(Collectors.summingDouble(Debit::getValue));
 		Map<String, Double> summary = new HashMap<>();
 		summary.put("credits", countCredits);
 		summary.put("debits", countDebits);
